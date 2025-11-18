@@ -1,0 +1,2 @@
+# check for AD Users who are enabled and have passwords that are not set to expire
+Get-ADUser -filter * -properties LockedOut, PasswordNeverExpires, Description, whenCreated, lastLogonTimestamp | Where-Object -Property Enabled -eq "True" | Where-Object -property PasswordNeverExpires -eq "True" | Format-Table Name, Description, whencreated, @{Name="Last Logon"; Expression={[DateTime]::FromFileTime($_.lastLogonTimestamp).ToString('yyyy-MM-dd hh:mm:ss')}}, Enabled, Lockedout, PasswordNeverExpires -Autosize
